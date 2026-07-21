@@ -15,8 +15,10 @@ MonoBehaviour:
   moveSpeed: 6
   acceleration: 60
   deceleration: 60
-  jumpForce: 16
+  jumpForce: 12.2
   gravityScale: 5
+  fallMultiplier: 2
+  lowJumpMultiplier: 3
   groundCheckRadius: 0.2
   groundLayer:
     serializedVersion: 2
