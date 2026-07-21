@@ -85,6 +85,11 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
             canvasDictionary[canvas.name] = canvasState;
         }
 
+        foreach (var key in canvasDictionary.Keys)
+        {
+            Debug.Log("Found canvas: " + key);
+        }
+
         Debug.Log("Canvas/UI information collected. / キャンバス・UI情報を取得しました。");
     }
 

@@ -43,4 +43,18 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
     {
         bgmAudioSource.Stop();
     }
+
+    // EN: Pauses the currently playing BGM without resetting its playback position. Used when the game is paused.
+    // JP: 再生位置を保持したままBGMを一時停止する。ゲームがポーズされた際に使用する。
+    public void PauseBGM()
+    {
+        bgmAudioSource.Pause();
+    }
+
+    // EN: Resumes BGM from where it was paused. Used when the game is unpaused.
+    // JP: 一時停止した位置からBGMを再開する。ポーズ解除時に使用する。
+    public void ResumeBGM()
+    {
+        bgmAudioSource.UnPause();
+    }
 }
