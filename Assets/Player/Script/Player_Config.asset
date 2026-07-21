@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ee40a1845b6e9d4fa55ba8dc04832e3, type: 3}
+  m_Name: Player_Config
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerConfig
+  moveSpeed: 6
+  acceleration: 60
+  deceleration: 60
+  jumpForce: 16
+  gravityScale: 5
+  groundCheckRadius: 0.2
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  coyoteTime: 0.1
+  jumpBufferTime: 0.1
