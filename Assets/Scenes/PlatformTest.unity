@@ -756,8 +756,8 @@ MonoBehaviour:
   smoothTime: 0.2
   deadZoneSize: {x: 0.5, y: 0.5}
   useBounds: 1
-  minBounds: {x: -100, y: -100}
-  maxBounds: {x: 100, y: 100}
+  minBounds: {x: -10, y: -10}
+  maxBounds: {x: 10, y: 10}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
