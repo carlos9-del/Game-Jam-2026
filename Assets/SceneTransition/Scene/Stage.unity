@@ -510,7 +510,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 0
+  m_Spacing: 2
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -1243,7 +1243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd8743231f58464abf1129dd2103638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CountdownTimer
-  startSeconds: 120
+  startSeconds: 15
   digitSprites:
   - {fileID: -535408724, guid: 934d110d28c9d3847bb753db1099171e, type: 3}
   - {fileID: -825347929, guid: 934d110d28c9d3847bb753db1099171e, type: 3}
