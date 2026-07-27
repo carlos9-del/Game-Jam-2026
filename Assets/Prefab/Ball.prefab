@@ -138,7 +138,13 @@ MonoBehaviour:
   maxRadius: 1.8
   expandSpeed: 0.4
   angularSpeed: 360
-  launchSpeed: 15.2
+  reflectCount: 0
+  maxReflect: 5
+  sizeStep: 0.2
+  launchMultiplier: 2
+  shrinkSpeed: 1.5
+  suckAngularSpeed: 360
+  captureRadius: 1
 --- !u!58 &8607069006292213681
 CircleCollider2D:
   m_ObjectHideFlags: 0
