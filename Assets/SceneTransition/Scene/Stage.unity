@@ -1243,7 +1243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd8743231f58464abf1129dd2103638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CountdownTimer
-  startSeconds: 107
+  startSeconds: 120
   digitSprites:
   - {fileID: -535408724, guid: 934d110d28c9d3847bb753db1099171e, type: 3}
   - {fileID: -825347929, guid: 934d110d28c9d3847bb753db1099171e, type: 3}

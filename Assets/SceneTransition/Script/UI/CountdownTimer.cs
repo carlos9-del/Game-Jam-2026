@@ -83,7 +83,7 @@ public class CountdownTimer : MonoBehaviour
             // JP: 残り時間が少なくなったら、緊迫感を出す演出を発動する。
             if (remaining > 0 && remaining <= lowTimeThreshold && digitsContainer != null)
             {
-                StartCoroutine(ShakeRoutine());
+                StartCoroutine(ShakeRoutine()); 
             }
         }
 
