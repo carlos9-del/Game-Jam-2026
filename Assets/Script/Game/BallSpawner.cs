@@ -23,6 +23,7 @@ public class BallSpawner : MonoBehaviour
 
     void Update()
     {
+
         // --- ¶¬‚Ìˆ—iŠù‘¶j---
         spinningBalls.RemoveAll(ball => ball == null);
         if (spinningBalls.Count < maxSpinningBalls)
