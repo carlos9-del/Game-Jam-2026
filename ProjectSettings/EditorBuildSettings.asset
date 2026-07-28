@@ -5,27 +5,27 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
-    path: Assets/SceneTransition/Scene/Loading.unity
-    guid: 9eda43450fd429f41ae51e5c9c6093f9
-  - enabled: 1
-    path: Assets/SceneTransition/Scene/Result.unity
-    guid: 47ad83c33e732e84ebf172c8bc6b8b3e
-  - enabled: 1
-    path: Assets/SceneTransition/Scene/Stage.unity
-    guid: 5cbe52d22c791174f8539f7e36701a0e
   - enabled: 1
     path: Assets/SceneTransition/Scene/Title.unity
     guid: 72042f5075935a041a39083a9f1dd77c
   - enabled: 1
     path: Assets/SceneTransition/Scene/Rank.unity
     guid: 514abf81ea499084c9233e0f8ae3424e
+  - enabled: 0
+    path: Assets/SceneTransition/Scene/Loading.unity
+    guid: 9eda43450fd429f41ae51e5c9c6093f9
   - enabled: 1
     path: Assets/SceneTransition/Scene/GameScene.unity
     guid: 3dcacc2b8b01f5b4a9a5cc4eabb23ec9
+  - enabled: 1
+    path: Assets/SceneTransition/Scene/Result.unity
+    guid: 47ad83c33e732e84ebf172c8bc6b8b3e
+  - enabled: 0
+    path: Assets/SceneTransition/Scene/Stage.unity
+    guid: 5cbe52d22c791174f8539f7e36701a0e
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

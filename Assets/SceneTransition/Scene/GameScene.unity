@@ -1581,8 +1581,8 @@ Transform:
   m_GameObject: {fileID: 531023318}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.8, y: -0.6155, z: 0}
-  m_LocalScale: {x: 5.036923, y: 22.652946, z: 1}
+  m_LocalPosition: {x: -13.9, y: -0.6155, z: 0}
+  m_LocalScale: {x: 9.469415, y: 22.652946, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -5517,8 +5517,8 @@ Transform:
   m_GameObject: {fileID: 1477702184}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.67, y: 0.4422, z: 0}
-  m_LocalScale: {x: 5.036923, y: 21.226498, z: 1}
+  m_LocalPosition: {x: 13.9, y: -0.5, z: 0}
+  m_LocalScale: {x: 9.469415, y: 22.65295, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -6385,7 +6385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd8743231f58464abf1129dd2103638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CountdownTimer
-  startSeconds: 15
+  startSeconds: 120
   digitSprites:
   - {fileID: 987691243, guid: 5ec6a8cf78390c24a96f022a57b7e8bc, type: 3}
   - {fileID: 488680580, guid: 5ec6a8cf78390c24a96f022a57b7e8bc, type: 3}
@@ -6397,6 +6397,17 @@ MonoBehaviour:
   - {fileID: -853352895, guid: 5ec6a8cf78390c24a96f022a57b7e8bc, type: 3}
   - {fileID: 1450957753, guid: 5ec6a8cf78390c24a96f022a57b7e8bc, type: 3}
   - {fileID: -57224545, guid: 5ec6a8cf78390c24a96f022a57b7e8bc, type: 3}
+  lowTimeDigitSprites:
+  - {fileID: -1526142395, guid: 142a5311e42ac614b968f6a4830340dd, type: 3}
+  - {fileID: 206132039, guid: 142a5311e42ac614b968f6a4830340dd, type: 3}
+  - {fileID: 143315044, guid: 142a5311e42ac614b968f6a4830340dd, type: 3}
+  - {fileID: 1649239566, guid: 142a5311e42ac614b968f6a4830340dd, type: 3}
+  - {fileID: 1271294055, guid: 142a5311e42ac614b968f6a4830340dd, type: 3}
+  - {fileID: 2008520800, guid: 142a5311e42ac614b968f6a4830340dd, type: 3}
+  - {fileID: -661861592, guid: 142a5311e42ac614b968f6a4830340dd, type: 3}
+  - {fileID: -1900500501, guid: 142a5311e42ac614b968f6a4830340dd, type: 3}
+  - {fileID: 1737819704, guid: 142a5311e42ac614b968f6a4830340dd, type: 3}
+  - {fileID: -1422544490, guid: 142a5311e42ac614b968f6a4830340dd, type: 3}
   hundredsDigitSlot: {fileID: 860054114}
   tensDigitSlot: {fileID: 2135121516}
   onesDigitSlot: {fileID: 1767316970}
@@ -6404,9 +6415,11 @@ MonoBehaviour:
   timerFillImage: {fileID: 1251824758}
   lowTimeThreshold: 10
   lowTimeScale: 2.5
-  lowTimeColor: {r: 1, g: 0, b: 0, a: 1}
   lowTimeTickSE: {fileID: 8300000, guid: 40d6c9f4c1769104fa74c460879e968b, type: 3}
   lowTimeBGMVolume: 0.079
+  settledScale: 1.6
+  shrinkPortion: 0.5
+  shakeStrength: 6
 --- !u!1 &1902157759
 GameObject:
   m_ObjectHideFlags: 0

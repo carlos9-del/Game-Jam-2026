@@ -888,6 +888,65 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1096808756
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1096808758}
+  - component: {fileID: 1096808757}
+  m_Layer: 0
+  m_Name: ResultAudioSequence
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1096808757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096808756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8da0018b4308744eb097bcef4e5d1d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ResultAudioSequence
+  resultSE: {fileID: 8300000, guid: 0a98ac39f0461c440a47ef175c545a60, type: 3}
+  resultSEVolume: 0.5
+  resultBGM: {fileID: 8300000, guid: 4bdde56b5b9d77543850627d726e74cb, type: 3}
+  resultBGMNormalVolume: 0.5
+  resultBGMVolumeDuringCharacterSE: 0.1
+  resultBGMVolumeDuringCongratsSE: 0.1
+  characterSounds:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  characterSEVolume: 1
+  testCharacterIndex: 0
+  congratsSE: {fileID: 0}
+  congratsSEVolume: 1
+--- !u!4 &1096808758
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096808756}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 28.57889, y: 4.99695, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1343749055
 GameObject:
   m_ObjectHideFlags: 0
@@ -1468,52 +1527,6 @@ MonoBehaviour:
   holdScale: 1.08
   clickSE: {fileID: 8300000, guid: 12f291191fad6b24c953612902f200e5, type: 3}
   clickSEVolume: 0.5
---- !u!1 &1670260494
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1670260496}
-  - component: {fileID: 1670260495}
-  m_Layer: 0
-  m_Name: BGMPlayer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1670260495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1670260494}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b820346c89481734eb17ade4e5e5bcd7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SceneBGMPlayer
-  bgmClip: {fileID: 8300000, guid: 4bdde56b5b9d77543850627d726e74cb, type: 3}
-  bgmVolume: 0.5
---- !u!4 &1670260496
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1670260494}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 479.9986, y: 126.29301, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1741299464
 GameObject:
   m_ObjectHideFlags: 0
@@ -1833,4 +1846,4 @@ SceneRoots:
   - {fileID: 1907541350}
   - {fileID: 939301781}
   - {fileID: 1343749057}
-  - {fileID: 1670260496}
+  - {fileID: 1096808758}

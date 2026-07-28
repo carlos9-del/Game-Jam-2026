@@ -648,6 +648,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SceneBGMPlayer
   bgmClip: {fileID: 8300000, guid: ea72e1edd6c7c274fbed45a4a2ed3290, type: 3}
   bgmVolume: 0.5
+  enterSE: {fileID: 0}
+  enterSEVolume: 1
+  continuousWithScenes:
+  - Rank
 --- !u!4 &1217603593
 Transform:
   m_ObjectHideFlags: 0
