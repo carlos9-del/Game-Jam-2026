@@ -135,15 +135,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BallLauncher
   center: {x: 0, y: 0}
   startRadius: 0
-  maxRadius: 1.8
+  maxRadius: 0.9
   expandSpeed: 0.4
   angularSpeed: 300
-  launchMultiplier: 1
+  launchSpeed: 7
   reflectCount: 0
   maxReflect: 5
   sizeStep: 0.2
   shrinkSpeed: 1.5
-  suckAngularSpeed: 360
+  suckAngularSpeed: 120
   captureRadius: 1
   ballColor: 0
 --- !u!58 &8607069006292213681
