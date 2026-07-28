@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4668968267948563440}
   - component: {fileID: 6116772101621460674}
   - component: {fileID: 8607069006292213681}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: GreenBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,8 +137,8 @@ MonoBehaviour:
   startRadius: 0
   maxRadius: 1.8
   expandSpeed: 0.4
-  angularSpeed: 360
-  launchMultiplier: 2
+  angularSpeed: 300
+  launchMultiplier: 1
   reflectCount: 0
   maxReflect: 5
   sizeStep: 0.2
