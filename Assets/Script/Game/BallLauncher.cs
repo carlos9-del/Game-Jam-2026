@@ -10,79 +10,87 @@ public class BallLauncher : MonoBehaviour
     public float expandSpeed = 0.8f;        // 半径が広がる速さ（単位／秒）
     public float angularSpeed = 180f;       // 角速度（度／秒）
 
-    [Header("反射の設定")]
-    public int reflectCount = 0;        // 反射した回数（＝サイズ段階）
-    public int maxReflect = 5;          // 反射の上限
-    public float sizeStep = 0.2f;       // 1回の反射で増えるサイズ
-
     [Header("射出の設定")]
-    public float launchMultiplier = 2f;    // 接線速度にかける倍率
+    public float launchMultiplier = 2f;     // 接線速度にかける倍率
 
+    [Header("反射の設定")]
+    public int reflectCount = 0;            // 反射した回数（＝サイズ段階）
+    public int maxReflect = 5;              // 反射の上限
+    public float sizeStep = 0.2f;           // 1回の反射で増えるサイズ
+
+    [Header("吸い込み螺旋の設定")]
+    public float shrinkSpeed = 1.5f;        // 半径が縮む速さ
+    public float suckAngularSpeed = 360f;   // 吸い込み中の回転速度（度／秒）
+    public float captureRadius = 0.3f;      // この半径まで縮んだら「到達」
+
+    [Header("色の設定")]
+    public BallColorType ballColor;         // このボールの色
+
+    // ===== 内部の状態 =====
     private Rigidbody2D rb;
-    private BallSpawner spawner;
+    private SpriteRenderer sr;
+    private Vector3 baseScale;              // 元の大きさ
+
     private float currentAngle = 0f;        // 現在の角度（度）
     private float currentRadius;            // 現在の半径
-    private bool isLaunched = false;
-    private Vector3 baseScale;          // 元の大きさを覚えておく
+    private bool isLaunched = false;        // 射出済みか
 
+    private BallSpawner spawner;            // 自分を生成したスポナー
 
-    [Header("ブラックホール吸い込み")]
-    public float shrinkSpeed = 1.5f;    // 半径が縮む速さ（吸い込みの強さ）
-    public float suckAngularSpeed = 360f; // 吸い込み中の回転速度（度／秒）
-    public float captureRadius = 0.3f;  // この半径まで縮んだら?み込まれる
+    // ===== 吸い込み状態（黒洞・ゴール共通）=====
+    private bool isSucked = false;          // 吸い込み螺旋の最中か
+    private Vector2 suckCenter;             // 螺旋の中心
+    private float suckAngle;                // 螺旋の現在の角度
+    private float suckRadius;               // 螺旋の現在の半径
+    private bool destroyWhenReach = false;  // 中心到達で消すか
+    private System.Action onReachCenter;    // 中心到達時に呼ぶ処理
 
-    private bool isSucked = false;      // ブラックホールに吸われ中か
-    private BlackHole currentHole;      // 吸っているブラックホール
-    private float suckAngle;            // 吸い込み螺旋の現在の角度
-    private float suckRadius;           // 吸い込み螺旋の現在の半径
+    private bool isInGoal = false;          // ゴール処理中か
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
         currentRadius = startRadius;
-
-        // 元のサイズを保存しておく
         baseScale = transform.localScale;
     }
 
     void Update()
     {
-        // ブラックホールに吸われ中なら、それだけを処理する
+        // ① 吸い込み中なら最優先で処理
         if (isSucked)
         {
-            SpiralIntoHole();
+            SpiralIntoCenter();
             return;
         }
 
+        // ② 射出前：中心を回りながら蓄積
         if (!isLaunched)
         {
             SpiralOutward();
-            if (Input.GetKeyDown(KeyCode.JoystickButton0))
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button0))
             {
                 Launch();
             }
         }
     }
 
-    // 中心から外へ広がりながら回る（螺旋）
+    // ===== 蓄積：中心から外へ広がりながら回る =====
     void SpiralOutward()
     {
-        // 角度を進める
         currentAngle += angularSpeed * Time.deltaTime;
 
-        // 半径を少しずつ広げる（最大値で止める）
         currentRadius += expandSpeed * Time.deltaTime;
         currentRadius = Mathf.Min(currentRadius, maxRadius);
 
         float rad = currentAngle * Mathf.Deg2Rad;
         float x = center.x + Mathf.Cos(rad) * currentRadius;
         float y = center.y + Mathf.Sin(rad) * currentRadius;
-
         rb.position = new Vector2(x, y);
     }
 
-    // 接線方向へ射出する
+    // ===== 射出：接線方向へ飛ばす =====
     void Launch()
     {
         isLaunched = true;
@@ -91,97 +99,146 @@ public class BallLauncher : MonoBehaviour
         float rad = currentAngle * Mathf.Deg2Rad;
         Vector2 tangent = new Vector2(-Mathf.Sin(rad), Mathf.Cos(rad));
 
-        // 現在の接線速度を計算する： v = ω × r
-        // angularSpeed（度／秒）をラジアン／秒に変換してから半径を掛ける
+        // 接線速度： v = ω × r
         float angularSpeedRad = angularSpeed * Mathf.Deg2Rad;
         float tangentSpeed = angularSpeedRad * currentRadius;
 
-        // 発射倍率をかけて調整できるようにする
         rb.linearVelocity = tangent * tangentSpeed * launchMultiplier;
-        // スポナーに「もう回っていない」と伝える
+
         if (spawner != null)
         {
             spawner.OnBallLaunched(this.gameObject);
         }
     }
-    public void SetStartAngle(float angleDeg)
-    {
-        currentAngle = angleDeg;
-    }
-    public void SetSpawner(BallSpawner s)
-    {
-        spawner = s;
-    }
-    // 何かに衝突した瞬間に呼ばれる
+
+    // ===== 反射：壁に当たった時 =====
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // 射出前（回っている間）は数えない
         if (!isLaunched) return;
 
-        // 壁に当たった時だけ数える（ボール同士は数えない）
         if (collision.gameObject.CompareTag("Wall"))
         {
             AddReflect();
         }
     }
 
-    // 反射回数を増やしてサイズを大きくする
     void AddReflect()
     {
-        // 上限に達していたら何もしない
         if (reflectCount >= maxReflect) return;
 
         reflectCount++;
-
-        // サイズ段階に応じて大きくする
-        // 例：0回→1.0倍、5回→2.0倍（1.0 + 0.2 × 回数）
         float scale = 1f + sizeStep * reflectCount;
         transform.localScale = baseScale * scale;
     }
 
-    // ブラックホールに吸い込まれ始める
-    public void StartSuckedByBlackHole(BlackHole hole)
+    // ===== 吸い込み螺旋：黒洞・ゴール共通の入口 =====
+    // center : 螺旋の中心
+    // destroy: 中心到達でこのボールを消すか
+    // onReach: 中心到達時に呼びたい処理（無ければnull）
+    public void StartSuckSpiral(Vector2 center, bool destroy, System.Action onReach)
     {
-        // すでに吸われ中なら二重処理しない
         if (isSucked) return;
-
-        Debug.Log("吸い込み開始！ 現在の速度: " + rb.linearVelocity.magnitude);
-
         isSucked = true;
-        currentHole = hole;
+
+        suckCenter = center;
+        destroyWhenReach = destroy;
+        onReachCenter = onReach;
 
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.linearVelocity = Vector2.zero;
 
-        // 今の位置からブラックホール中心への相対位置を求める
-        Vector2 holeCenter = hole.transform.position;
-        Vector2 offset = rb.position - holeCenter;
-
-        // 現在の半径と角度を、入った瞬間の位置から逆算する
-        // これで螺旋が今いる場所から滑らかに始まる
+        // 入った瞬間の位置から半径・角度を逆算（滑らかに繋ぐ）
+        Vector2 offset = rb.position - center;
         suckRadius = offset.magnitude;
         suckAngle = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
     }
-    // ブラックホールへ向かって内向きに螺旋する
-    void SpiralIntoHole()
+
+    // 中心へ向かって内向きに螺旋する
+    void SpiralIntoCenter()
     {
-        if (currentHole == null) return;
-
-        // 角度を進める（回りながら）
         suckAngle += suckAngularSpeed * Time.deltaTime;
-
-        // 半径を少しずつ縮める
         suckRadius -= shrinkSpeed * Time.deltaTime;
 
-        // 最小半径で止める（消さずに、その場で回り続ける）
-        suckRadius = Mathf.Max(suckRadius, captureRadius);
+        // 中心に到達したら
+        if (suckRadius <= captureRadius)
+        {
+            suckRadius = captureRadius;
 
-        // ブラックホール中心を基準に螺旋位置を計算する
-        Vector2 holeCenter = currentHole.transform.position;
+            // 到達時の処理を1回だけ呼ぶ
+            if (onReachCenter != null)
+            {
+                onReachCenter.Invoke();
+                onReachCenter = null;
+            }
+
+            if (destroyWhenReach)
+            {
+                Destroy(gameObject);
+                return;
+            }
+        }
+
         float rad = suckAngle * Mathf.Deg2Rad;
-        float x = holeCenter.x + Mathf.Cos(rad) * suckRadius;
-        float y = holeCenter.y + Mathf.Sin(rad) * suckRadius;
-
+        float x = suckCenter.x + Mathf.Cos(rad) * suckRadius;
+        float y = suckCenter.y + Mathf.Sin(rad) * suckRadius;
         rb.position = new Vector2(x, y);
+    }
+
+    // ===== 外部インターフェース =====
+
+    public void SetStartAngle(float angleDeg)
+    {
+        currentAngle = angleDeg;
+    }
+
+    public void SetSpawner(BallSpawner s)
+    {
+        spawner = s;
+    }
+
+    public void SetColor(BallColorType color)
+    {
+        ballColor = color;
+
+        if (sr == null) sr = GetComponent<SpriteRenderer>();
+        sr.color = GetColorValue(color);
+    }
+
+    Color GetColorValue(BallColorType type)
+    {
+        switch (type)
+        {
+            case BallColorType.Red: return Color.red;
+            case BallColorType.Yellow: return Color.yellow;
+            case BallColorType.Blue: return Color.blue;
+            case BallColorType.Green: return Color.green;
+            default: return Color.white;
+        }
+    }
+
+    public BallColorType GetColor()
+    {
+        return ballColor;
+    }
+
+    public int GetSizeStage()
+    {
+        return reflectCount;
+    }
+
+    public bool IsLaunched()
+    {
+        return isLaunched;
+    }
+
+    // ゴール処理中か（二重処理防止）
+    public bool IsInGoal()
+    {
+        return isInGoal;
+    }
+
+    public void SetInGoal(bool value)
+    {
+        isInGoal = value;
     }
 }

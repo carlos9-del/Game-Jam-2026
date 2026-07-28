@@ -37,17 +37,35 @@ public class BallSpawner : MonoBehaviour
     {
         GameObject newBall = Instantiate(ballPrefab, center, Quaternion.identity);
 
-        float angle = spawnCounter * 137.5f;   // 黄金角でずらす
-
         BallLauncher launcher = newBall.GetComponent<BallLauncher>();
         if (launcher != null)
         {
+            // 出生角度をずらす（黄金角137.5度で綺麗に散らばる）
+            float angle = spawnCounter * 137.5f;
             launcher.SetStartAngle(angle);
-            launcher.SetSpawner(this);   // 自分を教えておく
+
+            // 自分（スポナー）を教えておく
+            launcher.SetSpawner(this);
+
+            // ランダムで色を割り当てる（4色から1つ）
+            BallColorType randomColor = GetRandomColor();
+            launcher.SetColor(randomColor);
         }
 
         spinningBalls.Add(newBall);
         spawnCounter++;
+    }
+
+    // 4色からランダムに1つ選ぶ
+    BallColorType GetRandomColor()
+    {
+        BallColorType[] colors = {
+            BallColorType.Red,
+            BallColorType.Yellow,
+            BallColorType.Blue,
+            BallColorType.Green
+        };
+        return colors[Random.Range(0, colors.Length)];
     }
 
     // ボールが射出されたら呼ばれる：回っているリストから外す

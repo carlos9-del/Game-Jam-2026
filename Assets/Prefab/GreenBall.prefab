@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6116772101621460674}
   - component: {fileID: 8607069006292213681}
   m_Layer: 0
-  m_Name: Ball
+  m_Name: GreenBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.36584914, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -138,13 +138,14 @@ MonoBehaviour:
   maxRadius: 1.8
   expandSpeed: 0.4
   angularSpeed: 360
+  launchMultiplier: 2
   reflectCount: 0
   maxReflect: 5
   sizeStep: 0.2
-  launchMultiplier: 2
   shrinkSpeed: 1.5
   suckAngularSpeed: 360
   captureRadius: 1
+  ballColor: 0
 --- !u!58 &8607069006292213681
 CircleCollider2D:
   m_ObjectHideFlags: 0
