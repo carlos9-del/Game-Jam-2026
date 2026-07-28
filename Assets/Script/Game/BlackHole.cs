@@ -9,6 +9,9 @@ public class BlackHole : MonoBehaviour
     [Header("色の設定")]
     public BallColorType holeColor;         // この穴（ゴール）の色
 
+    [Header("同色結算の演出")]
+    public GameObject bigBallPrefab;    // 結算時に出す大きい球のPrefab
+
     [Header("同じ色の蓄積")]
     public int requiredCount = 4;           // 同色が何個で結算するか
 
@@ -59,20 +62,29 @@ public class BlackHole : MonoBehaviour
     void SettleSameColor()
     {
         int total = 0;
+
         foreach (BallLauncher ball in sameColorBalls)
         {
             if (ball == null) continue;
 
-            // (基礎値 + サイズ段階 × 倍率) × 同色倍率
+            // 得点は各球のサイズ段階から計算（従来通り）
             int stage = ball.GetSizeStage();
             total += (baseScore + stage * sizeMultiplier) * sameColorBonus;
-            ball.PlaySyoumetuEffect();
+
+            // 4個は「そっと」消す（個別の消滅エフェクトは出さない）
             Destroy(ball.gameObject);
         }
 
         Debug.Log(holeColor + "：同色そろって結算！ +" + total);
         SendScore(total);
+
         sameColorBalls.Clear();
+
+        // 中心に大きい球を生成する（以降の演出は大球が担当）
+        if (bigBallPrefab != null)
+        {
+            Instantiate(bigBallPrefab, transform.position, Quaternion.identity);
+        }
     }
 
     // ===== 違う色：螺旋で吸い込んで即結算 =====
