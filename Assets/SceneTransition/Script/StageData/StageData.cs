@@ -17,17 +17,14 @@ public class StageData : ScriptableObject
     [Header("Scene Name (must match the exact name in Build Settings)")]
     public string sceneName;
 
-    [Header("Display Name (shown on the loading screen)")]
-    public string displayName;
-
-    [Header("Loading Screen Background")]
-    public Sprite loadingBackground;
-
     [Header("Stage BGM")]
     public AudioClip bgmClip;
 
+    [Header("Stage BGM Volume (0-1)")]
+    [Range(0f, 1f)] public float bgmVolume = 1.0f;
+
     // EN: Add more per-stage fields here later as needed
-    //     (e.g. BGM clip, difficulty, par time, etc.)
+    //     (e.g. difficulty, par time, etc.)
     // JP: 今後必要になったステージ固有の項目をここに追加していく
-    //     （例：BGMクリップ、難易度、目標タイムなど）
+    //     （例：難易度、目標タイムなど）
 }

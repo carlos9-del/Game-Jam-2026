@@ -38,6 +38,9 @@ public class ButtonAction : MonoBehaviour,
     [Header("Sound Effect To Play On Click")]
     [SerializeField] private AudioClip clickSE;
 
+    [Header("Click SE Volume (0-1)")]
+    [SerializeField][Range(0f, 1f)] private float clickSEVolume = 1.0f;
+
     // EN: Assign a method here to define what happens when this button is clicked.
     // JP: このボタンがクリックされた時の処理を定義するため、外部から代入する。
     public System.Action onClick;
@@ -64,7 +67,7 @@ public class ButtonAction : MonoBehaviour,
     // JP: マウス・タッチのクリックと、ゲームパッド・キーボードのSubmitの両方で共通して使われるクリック処理。
     private void TriggerClick()
     {
-        SoundManager.Instance.PlaySE(clickSE);
+        SoundManager.Instance.PlaySE(clickSE, clickSEVolume);
         onClick?.Invoke();
     }
 
@@ -107,6 +110,7 @@ public class ButtonAction : MonoBehaviour,
     }
 }
 
+
 //using UnityEngine;
 //using UnityEngine.EventSystems;
 
@@ -131,7 +135,10 @@ public class ButtonAction : MonoBehaviour,
 //    IPointerDownHandler,
 //    IPointerEnterHandler,
 //    IPointerExitHandler,
-//    IPointerUpHandler
+//    IPointerUpHandler,
+//    ISubmitHandler,
+//    ISelectHandler,
+//    IDeselectHandler
 //{
 //    private Vector2 defaultScale; // EN: the button's original scale / JP: ボタンの元の大きさ
 
@@ -153,8 +160,22 @@ public class ButtonAction : MonoBehaviour,
 //        defaultScale = transform.localScale; // EN: cache original scale / JP: ボタンの元のサイズを保存
 //    }
 
-//    // EN: Called the moment the button is clicked. / JP: ボタンがクリックされた時に呼び出される。
+//    // EN: Called the moment the button is clicked by mouse or touch. / JP: マウスまたはタッチでボタンがクリックされた時に呼び出される。
 //    public void OnPointerClick(PointerEventData eventData)
+//    {
+//        TriggerClick();
+//    }
+
+//    // EN: Called when "Submit" is pressed (gamepad button / Enter key) while this button is selected via navigation.
+//    // JP: このボタンがナビゲーションで選択されている状態で「Submit」（ゲームパッドのボタンやEnterキー）が押された時に呼び出される。
+//    public void OnSubmit(BaseEventData eventData)
+//    {
+//        TriggerClick();
+//    }
+
+//    // EN: Shared click logic used by both mouse/touch clicks and gamepad/keyboard submit.
+//    // JP: マウス・タッチのクリックと、ゲームパッド・キーボードのSubmitの両方で共通して使われるクリック処理。
+//    private void TriggerClick()
 //    {
 //        SoundManager.Instance.PlaySE(clickSE);
 //        onClick?.Invoke();
@@ -182,5 +203,19 @@ public class ButtonAction : MonoBehaviour,
 //    public void OnPointerUp(PointerEventData eventData)
 //    {
 //        transform.localScale = defaultScale * hoverScale;
+//    }
+
+//    // EN: Called when this button becomes selected via keyboard/gamepad navigation - mirrors the hover visual.
+//    // JP: キーボード・ゲームパッドのナビゲーションでこのボタンが選択された時に呼び出される - ホバー時と同じ見た目にする。
+//    public void OnSelect(BaseEventData eventData)
+//    {
+//        transform.localScale = defaultScale * hoverScale;
+//    }
+
+//    // EN: Called when this button becomes deselected via keyboard/gamepad navigation - reverts the visual.
+//    // JP: キーボード・ゲームパッドのナビゲーションでこのボタンの選択が解除された時に呼び出される - 見た目を元に戻す。
+//    public void OnDeselect(BaseEventData eventData)
+//    {
+//        transform.localScale = defaultScale;
 //    }
 //}

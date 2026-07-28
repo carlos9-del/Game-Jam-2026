@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: Stage1
   m_EditorClassIdentifier: Assembly-CSharp::StageData
   sceneName: GameScene
-  displayName: 
-  loadingBackground: {fileID: 0}
-  bgmClip: {fileID: 8300000, guid: 3028ce0b55ee59b498905891bcc79802, type: 3}
+  bgmClip: {fileID: 8300000, guid: 83b1f0e3f39d1fb4d854c80c3c423ac2, type: 3}
+  bgmVolume: 0.35

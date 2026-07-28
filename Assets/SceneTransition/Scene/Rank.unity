@@ -3130,7 +3130,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ButtonAction
   hoverScale: 1.15
   holdScale: 1.08
-  clickSE: {fileID: 8300000, guid: 40d6c9f4c1769104fa74c460879e968b, type: 3}
+  clickSE: {fileID: 8300000, guid: 12f291191fad6b24c953612902f200e5, type: 3}
+  clickSEVolume: 0.5
 --- !u!1 &1806575713
 GameObject:
   m_ObjectHideFlags: 0

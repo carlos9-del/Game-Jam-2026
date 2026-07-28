@@ -21,10 +21,21 @@ public class StageManager : MonoBehaviour
         PlayStageBGM();
     }
 
+    // EN: Stops the BGM when this scene unloads (going to Result, back to Title, etc.),
+    //     so it doesn't keep playing into other scenes. It will play again from the start
+    //     next time Stage is entered, since PlayStageBGM() runs fresh in Start().
+    // JP: このシーンがアンロードされる際（Resultへ遷移、Titleへ戻るなど）にBGMを停止し、
+    //     他のシーンで鳴り続けないようにする。次にStageに入った際は、Start()が
+    //     改めて実行されるため、BGMは最初から再生される。
+    private void OnDestroy()
+    {
+        SoundManager.Instance.StopBGM();
+    }
+
     // EN: Plays this stage's BGM, if one is assigned. / JP: このステージのBGMが設定されていれば再生する。
     private void PlayStageBGM()
     {
         if (stageData == null || stageData.bgmClip == null) return;
-        SoundManager.Instance.PlayBGM(stageData.bgmClip);
+        SoundManager.Instance.PlayBGM(stageData.bgmClip, stageData.bgmVolume);
     }
 }

@@ -22,19 +22,23 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
         bgmAudioSource.loop = true; // EN: BGM should loop continuously / JP: BGMはループ再生させる
     }
 
-    // EN: Plays a one-shot sound effect from a directly-assigned AudioClip. / JP: 直接渡されたAudioClipを1回だけ再生する（SE用）。
-    public void PlaySE(AudioClip clip)
+    // EN: Plays a one-shot sound effect at the given volume (0-1). Volume defaults to 1 if not specified.
+    // JP: 指定した音量（0～1）でSEを1回再生する。省略した場合は1（デフォルト）になる。
+    public void PlaySE(AudioClip clip, float volume = 1.0f)
     {
         if (clip == null) return; // EN: nothing assigned, skip silently / JP: クリップが未設定の場合は何もしない
-        seAudioSource.PlayOneShot(clip);
+        seAudioSource.PlayOneShot(clip, volume);
     }
 
-    // EN: Plays background music from a directly-assigned AudioClip, replacing any currently playing BGM.
-    // JP: 直接渡されたAudioClipをBGMとして再生する。現在再生中のBGMは停止・置き換えられる。
-    public void PlayBGM(AudioClip clip)
+    // EN: Plays background music at the given volume (0-1), replacing any currently playing BGM.
+    //     Volume defaults to 1 if not specified.
+    // JP: 指定した音量（0～1）でBGMを再生する。現在再生中のBGMは停止・置き換えられる。
+    //     省略した場合は1（デフォルト）になる。
+    public void PlayBGM(AudioClip clip, float volume = 1.0f)
     {
         if (clip == null) return; // EN: nothing assigned, skip silently / JP: クリップが未設定の場合は何もしない
         bgmAudioSource.clip = clip;
+        bgmAudioSource.volume = volume;
         bgmAudioSource.Play();
     }
 
