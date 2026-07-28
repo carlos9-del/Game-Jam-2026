@@ -2514,6 +2514,7 @@ MonoBehaviour:
   chargeRate: 5
   maxChargeCount: 8
   launchEffectPrefab: {fileID: 4335499220702372529, guid: a28f2c09f3ec0d646886922c6af1887f, type: 3}
+  effectCooldown: 0.3
 --- !u!212 &1042148119
 SpriteRenderer:
   serializedVersion: 2

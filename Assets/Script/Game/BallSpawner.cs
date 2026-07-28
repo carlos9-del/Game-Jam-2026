@@ -15,6 +15,9 @@ public class BallSpawner : MonoBehaviour
 
     [Header("発射エフェクト")]
     public GameObject launchEffectPrefab;   // 発射時のエフェクトPrefab
+    public float effectCooldown = 0.2f;     // エフェクトを出せる最短間隔（秒）
+
+    private float lastEffectTime = -999f;    // 前回エフェクトを出した時刻
     // ===== 内部の状態 =====
     private float timer = 0f;              // 生成タイマー
     private int spawnCounter = 0;          // 何個目を生成したか（角度をずらすため）
@@ -48,11 +51,17 @@ public class BallSpawner : MonoBehaviour
 
     void PlayLaunchEffect()
     {
-        if (launchEffectPrefab != null)
+        if (launchEffectPrefab == null) return;
+
+        // 前回から effectCooldown 秒たっていなければ、今回は出さない
+        if (Time.time - lastEffectTime < effectCooldown)
         {
-            // 中心位置にエフェクトを生成する（エフェクトは自分で消える）
-            Instantiate(launchEffectPrefab, center, Quaternion.identity);
+            return;
         }
+
+        // エフェクトを生成して、今の時刻を記録する
+        Instantiate(launchEffectPrefab, center, Quaternion.identity);
+        lastEffectTime = Time.time;
     }
 
     // ===== 生成 =====
