@@ -13,6 +13,8 @@ public class BallSpawner : MonoBehaviour
     public float chargeRate = 5f;          // 長押し中、1秒あたり何個ぶん溜まるか
     public int maxChargeCount = 8;         // 一度に射出できる最大数
 
+    [Header("発射エフェクト")]
+    public GameObject launchEffectPrefab;   // 発射時のエフェクトPrefab
     // ===== 内部の状態 =====
     private float timer = 0f;              // 生成タイマー
     private int spawnCounter = 0;          // 何個目を生成したか（角度をずらすため）
@@ -42,6 +44,15 @@ public class BallSpawner : MonoBehaviour
 
         // --- 射出の処理 ---
         HandleLaunchInput();
+    }
+
+    void PlayLaunchEffect()
+    {
+        if (launchEffectPrefab != null)
+        {
+            // 中心位置にエフェクトを生成する（エフェクトは自分で消える）
+            Instantiate(launchEffectPrefab, center, Quaternion.identity);
+        }
     }
 
     // ===== 生成 =====
@@ -115,6 +126,8 @@ public class BallSpawner : MonoBehaviour
             launchCount = Mathf.Clamp(launchCount, 1, maxChargeCount);
 
             LaunchOldest(launchCount);
+
+            PlayLaunchEffect();
         }
     }
 

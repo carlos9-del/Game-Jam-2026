@@ -267,7 +267,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 5
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0.36584914, g: 1, b: 0, a: 1}
@@ -323,6 +323,7 @@ MonoBehaviour:
   maxRadius: 0.9
   expandSpeed: 0.4
   angularSpeed: 300
+  syoumetuEffectPrefab: {fileID: 5447657844597286543, guid: afe6688e5a674a54180bfb5e9abea03d, type: 3}
   launchSpeed: 7
   reflectCount: 0
   maxReflect: 5
