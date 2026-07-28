@@ -45,6 +45,9 @@ public class CountdownTimer : MonoBehaviour
     [Header("Shake Duration Per Tick (seconds)")]
     [SerializeField] private float shakeDuration = 0.2f;
 
+    [Header("Timer Inner Fill Image (Image Type must be set to Filled / Radial 360)")]
+    [SerializeField] private Image timerFillImage;
+
     private Vector2 digitsDefaultPosition;
     private Vector3 digitsDefaultScale;
 
@@ -83,7 +86,7 @@ public class CountdownTimer : MonoBehaviour
             // JP: 残り時間が少なくなったら、緊迫感を出す演出を発動する。
             if (remaining > 0 && remaining <= lowTimeThreshold && digitsContainer != null)
             {
-                StartCoroutine(ShakeRoutine()); 
+                StartCoroutine(ShakeRoutine());
             }
         }
 
@@ -108,9 +111,9 @@ public class CountdownTimer : MonoBehaviour
         digitsContainer.anchoredPosition = digitsDefaultPosition;
     }
 
-    // EN: Updates the digit slots to show the given value (0-999).
+    // EN: Updates the digit slots to show the given value (0-999), and updates the radial fill.
     //     Leading zeros are hidden - "9" instead of "09", "99" instead of "099".
-    // JP: 指定された値（0～999）を表示するように、桁スロットを更新する。
+    // JP: 指定された値（0～999）を表示するように、桁スロットと放射状フィルを更新する。
     //     先頭の0は非表示になる - "09"ではなく"9"、"099"ではなく"99"と表示される。
     private void UpdateDisplay(int value)
     {
@@ -139,6 +142,13 @@ public class CountdownTimer : MonoBehaviour
         }
 
         if (onesDigitSlot != null) onesDigitSlot.sprite = digitSprites[ones];
+
+        // EN: Update the radial fill to match the remaining proportion of time (1.0 = full, 0.0 = empty).
+        // JP: 残り時間の割合に合わせて放射状フィルを更新する（1.0 = 満タン、0.0 = 空）。
+        if (timerFillImage != null && startSeconds > 0)
+        {
+            timerFillImage.fillAmount = (float)value / startSeconds;
+        }
     }
 }
 
@@ -154,10 +164,12 @@ public class CountdownTimer : MonoBehaviour
 ////     sprite digits (0-9) instead of text. When it reaches 0, transitions to the Result scene.
 ////     Automatically respects pause, since it waits using WaitForSeconds (affected by Time.timeScale).
 ////     Special rule: the final second (displaying "1") lasts twice as long as a normal second.
+////     When time is low, the digits grow larger and shake briefly on each tick for tension.
 //// JP: Stageシーンに配置する。設定した秒数からカウントダウンし、テキストではなくスプライト数字（0-9）で表示する。
 ////     0に到達すると、Resultシーンへ遷移する。
 ////     WaitForSecondsを使用しているため（Time.timeScaleの影響を受ける）、ポーズ時は自動的に一時停止する。
 ////     特別なルール：最後の1秒（「1」が表示されている間）は、通常の2倍の長さになる。
+////     残り時間が少なくなると、緊迫感を出すために数字が大きくなり、切り替わるたびに軽く揺れる。
 //public class CountdownTimer : MonoBehaviour
 //{
 //    [Header("Starting Time (seconds)")]
@@ -166,9 +178,39 @@ public class CountdownTimer : MonoBehaviour
 //    [Header("Digit Sprites (index 0 = '0', index 9 = '9')")]
 //    [SerializeField] private Sprite[] digitSprites = new Sprite[10];
 
+//    [Header("Hundreds Digit Slot (optional - leave empty if you only need 2 digits)")]
+//    [SerializeField] private Image hundredsDigitSlot;
+
 //    [Header("Digit Display Slots (left = tens, right = ones)")]
 //    [SerializeField] private Image tensDigitSlot;
 //    [SerializeField] private Image onesDigitSlot;
+
+//    [Header("Digits Container (parent of the digit slots, used for the low-time scale/shake effect)")]
+//    [SerializeField] private RectTransform digitsContainer;
+
+//    [Header("Time Remaining That Triggers The Low-Time Effect (seconds)")]
+//    [SerializeField] private int lowTimeThreshold = 10;
+
+//    [Header("Digit Scale Multiplier While Time Is Low")]
+//    [SerializeField] private float lowTimeScale = 1.3f;
+
+//    [Header("Shake Strength (pixels)")]
+//    [SerializeField] private float shakeStrength = 8.0f;
+
+//    [Header("Shake Duration Per Tick (seconds)")]
+//    [SerializeField] private float shakeDuration = 0.2f;
+
+//    private Vector2 digitsDefaultPosition;
+//    private Vector3 digitsDefaultScale;
+
+//    private void Awake()
+//    {
+//        if (digitsContainer != null)
+//        {
+//            digitsDefaultPosition = digitsContainer.anchoredPosition;
+//            digitsDefaultScale = digitsContainer.localScale;
+//        }
+//    }
 
 //    private void Start()
 //    {
@@ -191,22 +233,66 @@ public class CountdownTimer : MonoBehaviour
 
 //            remaining--;
 //            UpdateDisplay(remaining);
+
+//            // EN: Trigger the tension effect once time is low.
+//            // JP: 残り時間が少なくなったら、緊迫感を出す演出を発動する。
+//            if (remaining > 0 && remaining <= lowTimeThreshold && digitsContainer != null)
+//            {
+//                StartCoroutine(ShakeRoutine()); 
+//            }
 //        }
 
 //        SceneChangeManager.Instance.SceneChange("Result");
 //    }
 
-//    // EN: Updates the two digit slots to show the given value (00-99).
-//    // JP: 指定された値（00～99）を表示するように、2つの桁スロットを更新する。
+//    // EN: Briefly shakes and enlarges the digits container - called on each tick while time is low.
+//    // JP: 数字をまとめたコンテナを一時的に拡大・振動させる - 残り時間が少ない間、毎ティック呼び出される。
+//    private IEnumerator ShakeRoutine()
+//    {
+//        digitsContainer.localScale = digitsDefaultScale * lowTimeScale;
+
+//        float elapsedTime = 0.0f;
+//        while (elapsedTime < shakeDuration)
+//        {
+//            elapsedTime += Time.unscaledDeltaTime; // EN: use unscaled time so the shake still plays even if timeScale is briefly 0 / JP: timeScaleが0の場合でも揺れが再生されるよう、unscaledDeltaTimeを使用する
+//            Vector2 shakeOffset = Random.insideUnitCircle * shakeStrength;
+//            digitsContainer.anchoredPosition = digitsDefaultPosition + shakeOffset;
+//            yield return null;
+//        }
+
+//        digitsContainer.anchoredPosition = digitsDefaultPosition;
+//    }
+
+//    // EN: Updates the digit slots to show the given value (0-999).
+//    //     Leading zeros are hidden - "9" instead of "09", "99" instead of "099".
+//    // JP: 指定された値（0～999）を表示するように、桁スロットを更新する。
+//    //     先頭の0は非表示になる - "09"ではなく"9"、"099"ではなく"99"と表示される。
 //    private void UpdateDisplay(int value)
 //    {
 //        if (digitSprites == null || digitSprites.Length < 10) return;
 
-//        value = Mathf.Clamp(value, 0, 99);
-//        int tens = value / 10;
+//        value = Mathf.Clamp(value, 0, 999);
+//        int hundreds = value / 100;
+//        int tens = (value / 10) % 10;
 //        int ones = value % 10;
 
-//        if (tensDigitSlot != null) tensDigitSlot.sprite = digitSprites[tens];
+//        bool showHundreds = hundreds > 0;
+//        bool showTens = showHundreds || tens > 0;
+
+//        if (hundredsDigitSlot != null)
+//        {
+//            hundredsDigitSlot.gameObject.SetActive(showHundreds);
+//            if (showHundreds) hundredsDigitSlot.sprite = digitSprites[hundreds];
+//        }
+
+//        if (tensDigitSlot != null)
+//        {
+//            // EN: Hide the tens digit too when the whole number is a single digit (e.g. "9", not "09").
+//            // JP: 数値全体が1桁の場合、十の位も非表示にする（例："09"ではなく"9"）。
+//            tensDigitSlot.gameObject.SetActive(showTens);
+//            if (showTens) tensDigitSlot.sprite = digitSprites[tens];
+//        }
+
 //        if (onesDigitSlot != null) onesDigitSlot.sprite = digitSprites[ones];
 //    }
 //}
