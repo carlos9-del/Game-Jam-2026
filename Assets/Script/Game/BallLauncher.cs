@@ -210,7 +210,7 @@ public class BallLauncher : MonoBehaviour
         spawner = s;
     }
 
-    public void SetColor(BallColorType color)
+    public void SetColorType(BallColorType color)
     {
         ballColor = color;
 
