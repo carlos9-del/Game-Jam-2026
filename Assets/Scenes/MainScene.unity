@@ -1441,9 +1441,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faa5a507283022f48990a68eae52f1b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RingRotator
-  rotateSpeed: -90
-  controlButton: 0
-  direction: 0
+  rotateSpeed: 90
+  controlStick: 0
+  deadZone: 0.2
 --- !u!1 &918016932
 GameObject:
   m_ObjectHideFlags: 0
@@ -2294,8 +2294,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RingRotator
   rotateSpeed: 90
-  controlButton: 1
-  direction: 0
+  controlStick: 1
+  deadZone: 0.2
 --- !u!1 &1228105998
 GameObject:
   m_ObjectHideFlags: 0
