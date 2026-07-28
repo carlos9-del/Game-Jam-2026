@@ -47,14 +47,17 @@ public class BallLauncher : MonoBehaviour
 
     private bool isInGoal = false;          // ÉSÅ[ÉãèàóùíÜÇ©
 
-    void Start()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+
+    }
+    void Start()
+    {
         rb.bodyType = RigidbodyType2D.Kinematic;
         currentRadius = startRadius;
         baseScale = transform.localScale;
     }
-
     void Update()
     {
         if (isSucked)
@@ -89,6 +92,7 @@ public class BallLauncher : MonoBehaviour
     public void Launch()
     {
         if (isLaunched || isSucked) return;
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
 
         isLaunched = true;
         rb.bodyType = RigidbodyType2D.Dynamic;
