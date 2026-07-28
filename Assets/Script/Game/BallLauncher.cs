@@ -10,6 +10,13 @@ public class BallLauncher : MonoBehaviour
     public float expandSpeed = 0.8f;        // 半径が広がる速さ（単位／秒）
     public float angularSpeed = 180f;       // 角速度（度／秒）
 
+    [Header("吸い込み時の演出")]
+    public float suckScaleMultiplier = 1.5f;   // 吸い込み終わりに何倍になるか
+    public float scaleGrowSpeed = 2f;          // 大きくなる速さ（大きいほど早く1.5倍になる）
+
+    private Vector3 suckTargetScale;           // 吸い込み中の目標サイズ
+
+
     [Header("消滅エフェクト")]
     public GameObject syoumetuEffectPrefab;   // 消滅エフェクトのPrefab
 
@@ -39,6 +46,12 @@ public class BallLauncher : MonoBehaviour
     private bool isLaunched = false;        // 射出済みか
     private float launchSpeedFixed;   // 射出時の速さ（反射後もこれを保つ）
     private BallSpawner spawner;            // 自分を生成したスポナー
+
+    [Header("挟まり対策")]
+    public float stuckThreshold = 0.5f;    // これ以下の速度が続いたら「挟まった」とみなす
+    public float stuckTime = 0.3f;         // 何秒動かなかったら脱出させるか
+
+    private float stuckTimer = 0f;
 
     // ===== 吸い込み状態（黒洞・ゴール共通）=====
     private bool isSucked = false;          // 吸い込み螺旋の最中か
@@ -76,7 +89,27 @@ public class BallLauncher : MonoBehaviour
         }
     }
 
+    void FixedUpdate()
+    {
+        // 射出後・飛行中の球だけをチェック（吸い込み中や蓄積中は除く）
+        if (!isLaunched || isSucked) return;
 
+        // 速度がとても小さい状態が続いていないか調べる
+        if (rb.linearVelocity.magnitude < stuckThreshold)
+        {
+            stuckTimer += Time.fixedDeltaTime;
+
+            if (stuckTimer >= stuckTime)
+            {
+                Unstick();          // 脱出させる
+                stuckTimer = 0f;
+            }
+        }
+        else
+        {
+            stuckTimer = 0f;        // 動いていればリセット
+        }
+    }
     // ===== 蓄積：中心から外へ広がりながら回る =====
     void SpiralOutward()
     {
@@ -145,7 +178,15 @@ public class BallLauncher : MonoBehaviour
         float scale = 1f + sizeStep * reflectCount;
         transform.localScale = baseScale * scale;
     }
+    void Unstick()
+    {
+        // ランダムな向きに、いつもの速さで飛ばす
+        float randomAngle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+        Vector2 dir = new Vector2(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle));
+        rb.linearVelocity = dir * launchSpeedFixed;
 
+        Debug.Log("挟まりを検出、脱出させた");
+    }
     // ===== 吸い込み螺旋：黒洞・ゴール共通の入口 =====
     // center : 螺旋の中心
     // destroy: 中心到達でこのボールを消すか
@@ -162,30 +203,36 @@ public class BallLauncher : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.linearVelocity = Vector2.zero;
 
-        // 入った瞬間の位置から半径・角度を逆算（滑らかに繋ぐ）
+        // 吸い込み開始の演出：見た目だけ1.5倍にする（スコアには影響しない）
+        // reflectCount（サイズ段階＝得点用）は変えないので、点数は吸い込み前のまま
+        suckTargetScale = transform.localScale * suckScaleMultiplier;
+
+        // 入った瞬間の位置から半径・角度を逆算
         Vector2 offset = rb.position - center;
         suckRadius = offset.magnitude;
         suckAngle = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
     }
-
     // 中心へ向かって内向きに螺旋する
     void SpiralIntoCenter()
     {
         suckAngle += suckAngularSpeed * Time.deltaTime;
         suckRadius -= shrinkSpeed * Time.deltaTime;
 
-        // 中心に到達したら
+        // 見た目を少しずつ目標サイズへ近づける（じわっと大きくなる）
+        transform.localScale = Vector3.Lerp(
+            transform.localScale,
+            suckTargetScale,
+            scaleGrowSpeed * Time.deltaTime
+        );
+
         if (suckRadius <= captureRadius)
         {
             suckRadius = captureRadius;
-
-            // 到達時の処理を1回だけ呼ぶ
             if (onReachCenter != null)
             {
                 onReachCenter.Invoke();
                 onReachCenter = null;
             }
-
             if (destroyWhenReach)
             {
                 PlaySyoumetuEffect();
