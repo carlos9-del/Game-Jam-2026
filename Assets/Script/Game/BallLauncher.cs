@@ -11,7 +11,7 @@ public class BallLauncher : MonoBehaviour
     public float angularSpeed = 180f;       // 角速度（度／秒）
 
     [Header("射出の設定")]
-    public float launchMultiplier = 2f;     // 接線速度にかける倍率
+    public float launchSpeed = 15f;     // 射出スピード（固定・調整可能）
 
     [Header("反射の設定")]
     public int reflectCount = 0;            // 反射した回数（＝サイズ段階）
@@ -34,7 +34,7 @@ public class BallLauncher : MonoBehaviour
     private float currentAngle = 0f;        // 現在の角度（度）
     private float currentRadius;            // 現在の半径
     private bool isLaunched = false;        // 射出済みか
-
+    private float launchSpeedFixed;   // 射出時の速さ（反射後もこれを保つ）
     private BallSpawner spawner;            // 自分を生成したスポナー
 
     // ===== 吸い込み状態（黒洞・ゴール共通）=====
@@ -47,34 +47,32 @@ public class BallLauncher : MonoBehaviour
 
     private bool isInGoal = false;          // ゴール処理中か
 
-    void Start()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+
+    }
+    void Start()
+    {
         rb.bodyType = RigidbodyType2D.Kinematic;
         currentRadius = startRadius;
         baseScale = transform.localScale;
     }
-
     void Update()
     {
-        // ① 吸い込み中なら最優先で処理
         if (isSucked)
         {
             SpiralIntoCenter();
             return;
         }
 
-        // ② 射出前：中心を回りながら蓄積
+        // 蓄積中はただ回るだけ（射出はスポナーが命令する）
         if (!isLaunched)
         {
             SpiralOutward();
-
-            if (Input.GetKeyDown(KeyCode.Joystick1Button0))
-            {
-                Launch();
-            }
         }
     }
+
 
     // ===== 蓄積：中心から外へ広がりながら回る =====
     void SpiralOutward()
@@ -91,26 +89,29 @@ public class BallLauncher : MonoBehaviour
     }
 
     // ===== 射出：接線方向へ飛ばす =====
-    void Launch()
+    public void Launch()
     {
+        if (isLaunched || isSucked) return;
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+
         isLaunched = true;
         rb.bodyType = RigidbodyType2D.Dynamic;
 
+        // 方向は接線方向のまま（射出角度は回転で決まる）
         float rad = currentAngle * Mathf.Deg2Rad;
         Vector2 tangent = new Vector2(-Mathf.Sin(rad), Mathf.Cos(rad));
 
-        // 接線速度： v = ω × r
-        float angularSpeedRad = angularSpeed * Mathf.Deg2Rad;
-        float tangentSpeed = angularSpeedRad * currentRadius;
+        // 速さは固定値を使う（半径に依存しない）
+        rb.linearVelocity = tangent * launchSpeed;
 
-        rb.linearVelocity = tangent * tangentSpeed * launchMultiplier;
+        // 射出時の速さを覚えておく（反射後もこの速さを保つ）
+        launchSpeedFixed = launchSpeed;
 
         if (spawner != null)
         {
             spawner.OnBallLaunched(this.gameObject);
         }
     }
-
     // ===== 反射：壁に当たった時 =====
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -119,9 +120,20 @@ public class BallLauncher : MonoBehaviour
         if (collision.gameObject.CompareTag("Wall"))
         {
             AddReflect();
+
+            // 反射後、速度の大きさを一定に保つ
+            KeepSpeedConstant();
         }
     }
 
+    // 反射で方向は変わっても、速さ（大きさ）は変えない
+    void KeepSpeedConstant()
+    {
+        // 物理エンジンが計算した「反射方向」はそのまま使う
+        // 「速さ」だけを狙った値に固定する
+        Vector2 dir = rb.linearVelocity.normalized;
+        rb.linearVelocity = dir * launchSpeedFixed;
+    }
     void AddReflect()
     {
         if (reflectCount >= maxReflect) return;
@@ -183,6 +195,8 @@ public class BallLauncher : MonoBehaviour
         float y = suckCenter.y + Mathf.Sin(rad) * suckRadius;
         rb.position = new Vector2(x, y);
     }
+
+
 
     // ===== 外部インターフェース =====
 
