@@ -10,6 +10,9 @@ public class BallLauncher : MonoBehaviour
     public float expandSpeed = 0.8f;        // 半径が広がる速さ（単位／秒）
     public float angularSpeed = 180f;       // 角速度（度／秒）
 
+    [Header("消滅エフェクト")]
+    public GameObject syoumetuEffectPrefab;   // 消滅エフェクトのPrefab
+
     [Header("射出の設定")]
     public float launchSpeed = 15f;     // 射出スピード（固定・調整可能）
 
@@ -185,6 +188,7 @@ public class BallLauncher : MonoBehaviour
 
             if (destroyWhenReach)
             {
+                PlaySyoumetuEffect();
                 Destroy(gameObject);
                 return;
             }
@@ -196,7 +200,14 @@ public class BallLauncher : MonoBehaviour
         rb.position = new Vector2(x, y);
     }
 
-
+    public void PlaySyoumetuEffect()
+    {
+        if (syoumetuEffectPrefab != null)
+        {
+            // ボールと同じ位置にエフェクトを生成する（エフェクトは自分で消える）
+            Instantiate(syoumetuEffectPrefab, transform.position, Quaternion.identity);
+        }
+    }
 
     // ===== 外部インターフェース =====
 

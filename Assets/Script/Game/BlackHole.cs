@@ -49,15 +49,10 @@ public class BlackHole : MonoBehaviour
     // ===== 同じ色：中心に留めて溜める =====
     void AcceptSameColor(BallLauncher ball)
     {
-        ball.StartSuckSpiral(transform.position, false, null);
-        sameColorBalls.Add(ball);
+        // 中心へ螺旋させる。中心に着いたら OnSameColorReached を呼ぶ（消さずに留める）
+        ball.StartSuckSpiral(transform.position, false, () => OnSameColorReached(ball));
 
-        Debug.Log(holeColor + "：同色蓄積 " + sameColorBalls.Count + "/" + requiredCount);
-
-        if (sameColorBalls.Count >= requiredCount)
-        {
-            SettleSameColor();
-        }
+        Debug.Log(holeColor + "：同色ボールが中心へ向かう…");
     }
 
     // 溜まった同色ボールをまとめて得点化
@@ -71,7 +66,7 @@ public class BlackHole : MonoBehaviour
             // (基礎値 + サイズ段階 × 倍率) × 同色倍率
             int stage = ball.GetSizeStage();
             total += (baseScore + stage * sizeMultiplier) * sameColorBonus;
-
+            ball.PlaySyoumetuEffect();
             Destroy(ball.gameObject);
         }
 
@@ -97,7 +92,9 @@ public class BlackHole : MonoBehaviour
     {
         foreach (BallLauncher ball in sameColorBalls)
         {
-            if (ball != null) Destroy(ball.gameObject);
+            if (ball != null)
+                ball.PlaySyoumetuEffect(); 
+                Destroy(ball.gameObject);
         }
         sameColorBalls.Clear();
     }
@@ -106,6 +103,20 @@ public class BlackHole : MonoBehaviour
     {
         Debug.Log("得点を送信：+" + amount);
         ScoreManager.Instance.AddScore(amount);  // ← 本物のScoreManagerが来たら有効化
+    }
+
+    void OnSameColorReached(BallLauncher ball)
+    {
+        // ここで初めて「就位した」とカウントする
+        sameColorBalls.Add(ball);
+
+        Debug.Log(holeColor + "：中心に到着 " + sameColorBalls.Count + "/" + requiredCount);
+
+        // 中心に着いた球が必要数そろったら、まとめて結算（爆発）
+        if (sameColorBalls.Count > requiredCount)
+        {
+            SettleSameColor();
+        }
     }
 
     void OnDrawGizmosSelected()
