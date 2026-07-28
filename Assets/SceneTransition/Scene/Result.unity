@@ -979,10 +979,10 @@ MonoBehaviour:
   scoreDigitsDisplay: {fileID: 1450557958}
   rankImageSlot: {fileID: 543295148}
   rankSprites:
-  - {fileID: -371828783, guid: e0a7492e418cfa3449e3fda6c5f09a34, type: 3}
-  - {fileID: -93320844, guid: e0a7492e418cfa3449e3fda6c5f09a34, type: 3}
-  - {fileID: -1815780985, guid: e0a7492e418cfa3449e3fda6c5f09a34, type: 3}
-  - {fileID: 1441020234, guid: e0a7492e418cfa3449e3fda6c5f09a34, type: 3}
+  - {fileID: -2141434780, guid: 6e9c1278791e43245b83748aa53ffa26, type: 3}
+  - {fileID: 1599501392, guid: 6e9c1278791e43245b83748aa53ffa26, type: 3}
+  - {fileID: 1105404137, guid: 6e9c1278791e43245b83748aa53ffa26, type: 3}
+  - {fileID: -1215847440, guid: 6e9c1278791e43245b83748aa53ffa26, type: 3}
   rankSMinScore: 15000
   rankAMinScore: 10000
   rankBMinScore: 5000
