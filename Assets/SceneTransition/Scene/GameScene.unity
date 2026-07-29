@@ -675,7 +675,7 @@ MonoBehaviour:
   - {fileID: 2286148407007664363, guid: 0bd07f782d1ffa846ba7958b3d647067, type: 3}
   - {fileID: 2286148407007664363, guid: c52da1088602a284196bb698c92d7a9c, type: 3}
   - {fileID: 2286148407007664363, guid: 4772a220c8c85d54d94e379b4138398e, type: 3}
-  scoreStep: 200
+  scoreStep: 1000
   dropY: 6.32
   rangeLeft: 12.3
   rangeRight: 10.28
@@ -5302,7 +5302,7 @@ MonoBehaviour:
   - {fileID: 2286148407007664363, guid: 0bd07f782d1ffa846ba7958b3d647067, type: 3}
   - {fileID: 2286148407007664363, guid: c52da1088602a284196bb698c92d7a9c, type: 3}
   - {fileID: 2286148407007664363, guid: 4772a220c8c85d54d94e379b4138398e, type: 3}
-  scoreStep: 200
+  scoreStep: 1000
   dropY: 6.32
   rangeLeft: -12.4
   rangeRight: -10.13

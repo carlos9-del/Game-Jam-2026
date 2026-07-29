@@ -16,9 +16,9 @@ public class BlackHole : MonoBehaviour
     public int requiredCount = 4;           // 同色が何個で結算するか
 
     [Header("スコア計算")]
-    public int baseScore = 3;               // 基礎値
+    public int baseScore = 1;               // 基礎値
     public int sizeMultiplier = 1;          // サイズ段階にかける倍率
-    public int sameColorBonus = 3;          // 同じ色の時の倍率
+    public int sameColorBonus = 10;          // 同じ色の時の倍率
 
     // 同じ色のボールを溜めておくリスト
     private List<BallLauncher> sameColorBalls = new List<BallLauncher>();
@@ -69,7 +69,7 @@ public class BlackHole : MonoBehaviour
 
             // 得点は各球のサイズ段階から計算（従来通り）
             int stage = ball.GetSizeStage();
-            total += (baseScore + stage * sizeMultiplier) * sameColorBonus*10;
+            total += ((baseScore + stage * sizeMultiplier) * sameColorBonus) * 10;
 
             ColorCounter.Instance.AddCount(ball.GetColor());
             // 4個は「そっと」消す（個別の消滅エフェクトは出さない）
@@ -92,7 +92,7 @@ public class BlackHole : MonoBehaviour
     void AcceptDifferentColor(BallLauncher ball)
     {
         int stage = ball.GetSizeStage();
-        int score = (baseScore + stage * sizeMultiplier) * 10;
+        int score = (baseScore) * 0 + 1; //(baseScore + stage * sizeMultiplier) * 1;
 
         Debug.Log(holeColor + "：違う色 即結算 +" + score);
         SendScore(score);
@@ -107,8 +107,8 @@ public class BlackHole : MonoBehaviour
         foreach (BallLauncher ball in sameColorBalls)
         {
             if (ball != null)
-                ball.PlaySyoumetuEffect(); 
-                Destroy(ball.gameObject);
+                ball.PlaySyoumetuEffect();
+            Destroy(ball.gameObject);
         }
         sameColorBalls.Clear();
     }
