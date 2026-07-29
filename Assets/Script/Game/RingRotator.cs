@@ -1,45 +1,94 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class RingRotator : MonoBehaviour
 {
-    [Header("回転の設定")]
-    public float rotateSpeed = 90f;     // 回転速度（度／秒）
+    [Header("回転速度の設定")]
+    public float minSpeed = 30f;        // 最低速度
+    public float maxSpeed = 180f;       // 最高速度
+    public float accelTime = 5f;        // 最低から最高まで加速する時間（秒）
 
-    // どちらのスティックで回すか
-    public enum ControlStick { L_Stick, R_Stick }
-    public ControlStick controlStick = ControlStick.R_Stick;
+    // 現在の回転速度（BallSpawnerがこれを読む）
+    public float CurrentSpeed { get; private set; }
 
-    [Header("入力の調整")]
-    public float deadZone = 0.2f;       // これ以下の傾きは無視する（誤作動防止）
+    // 現在の回転方向（1 = 右/RB, -1 = 左/LB, 0 = なし）
+    private int currentDir = 0;
 
-    // Input Managerで設定した軸の名前
-    private const string R_STICK_AXIS = "RStickHorizontal";  // 右スティック横
-    private const string L_STICK_AXIS = "LStickHorizontal";  // 左スティック横
+    private Rigidbody2D rb;
+
+    // 旧Input Managerのボタン（LB=4, RB=5）
+    private const KeyCode LB = KeyCode.JoystickButton4;
+    private const KeyCode RB = KeyCode.JoystickButton5;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        CurrentSpeed = 0f;
+    }
 
     void Update()
     {
-        // 担当スティックの横方向の傾きを読む（-1.0?+1.0）
-        float input = 0f;
+        // 入力の判定はUpdateで行う（取りこぼしを防ぐ）
+        HandleInput();
+    }
 
-        if (controlStick == ControlStick.R_Stick)
+    void FixedUpdate()
+    {
+        // 物理的な回転はFixedUpdateで行う（貫通対策）
+        ApplyRotation();
+    }
+
+    void HandleInput()
+    {
+        float accelPerSec = (maxSpeed - minSpeed) / accelTime;
+
+        // 押した瞬間に方向を採用（同時押しでも後押しが勝つ）
+        if (Input.GetKeyDown(RB)) currentDir = 1;
+        if (Input.GetKeyDown(LB)) currentDir = -1;
+
+        bool rbHeld = Input.GetKey(RB);
+        bool lbHeld = Input.GetKey(LB);
+
+        // どちらも押していない → 速度を即ゼロにする（回転停止）
+        if (!rbHeld && !lbHeld)
         {
-            input = Input.GetAxis(R_STICK_AXIS);
+            CurrentSpeed = 0f;
+            currentDir = 0;
+            return;
         }
-        else
+
+        // 押している方向に応じて速度を変化させる
+        if (currentDir == 1 && rbHeld)
         {
-            input = Input.GetAxis(L_STICK_AXIS);
+            CurrentSpeed += accelPerSec * Time.deltaTime;
+        }
+        else if (currentDir == -1 && lbHeld)
+        {
+            CurrentSpeed += accelPerSec * Time.deltaTime;
+        }
+        else if (rbHeld && currentDir == -1)
+        {
+            // 逆方向を押した → 速度半減して方向転換
+            CurrentSpeed *= 0.5f;
+            currentDir = 1;
+        }
+        else if (lbHeld && currentDir == 1)
+        {
+            CurrentSpeed *= 0.5f;
+            currentDir = -1;
         }
 
-        // 小さすぎる傾きは無視する（スティックの遊び対策）
-        if (Mathf.Abs(input) < deadZone) return;
+        // 押している間は最低30?最高maxSpeedに収める
+        CurrentSpeed = Mathf.Clamp(CurrentSpeed, minSpeed, maxSpeed);
+    }
 
-        // 傾きの符号で回転方向が決まる
-        // 左に倒す（input < 0）→ 反時計回り（プラス回転）
-        // 右に倒す（input > 0）→ 時計回り（マイナス回転）
-        // なので -input を使う
-        float rotateAmount = -input * rotateSpeed * Time.deltaTime;
+    void ApplyRotation()
+    {
+        if (currentDir == 0) return;
 
-        // Z軸まわりに回転（中心が原点なので中心を軸に公転する）
-        transform.Rotate(0f, 0f, rotateAmount);
+        float rotateAmount = -currentDir * CurrentSpeed * Time.fixedDeltaTime;
+
+        // 物理エンジン経由で回転（transform.Rotateではなくこれを使う）
+        rb.MoveRotation(rb.rotation + rotateAmount);
     }
 }
