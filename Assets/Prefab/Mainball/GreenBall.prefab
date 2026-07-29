@@ -329,7 +329,7 @@ MonoBehaviour:
   launchSpeed: 7
   reflectCount: 0
   maxReflect: 5
-  sizeStep: 0.3
+  sizeStep: 0.35
   shrinkSpeed: 1.5
   suckAngularSpeed: 120
   captureRadius: 1
