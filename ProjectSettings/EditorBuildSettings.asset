@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/SceneTransition/Scene/Rank.unity
     guid: 514abf81ea499084c9233e0f8ae3424e
-  - enabled: 0
+  - enabled: 1
     path: Assets/SceneTransition/Scene/Loading.unity
     guid: 9eda43450fd429f41ae51e5c9c6093f9
   - enabled: 1

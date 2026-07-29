@@ -176,7 +176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 10d90c85388282b4aa770663b1f102d4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c79e22ea33e05e448974276d162c4982, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1229,7 +1229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SceneChangeButton
   targetScene: 
   targetStageData: {fileID: 11400000, guid: fe8147d79a34c334e9c1dc28c2a2e7c8, type: 2}
-  useLoadingScreen: 0
+  useLoadingScreen: 1
 --- !u!114 &1538369601
 MonoBehaviour:
   m_ObjectHideFlags: 0

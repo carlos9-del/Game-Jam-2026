@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 10756, guid: 0000000000000000e000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -119,6 +119,83 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &22236062
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 22236064}
+  - component: {fileID: 22236063}
+  m_Layer: 0
+  m_Name: LoadingAnimation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &22236063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22236062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 929645b78f920894681acea98976abf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LoadingAnimation
+  targetImage: {fileID: 2017433157}
+  frames:
+  - {fileID: -259254130, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: 1658869446, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: 2099839190, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: 1443590192, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: -1578029603, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: -1870655134, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: 278194262, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: -70928690, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: -1591425080, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: 963638044, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: -1461216717, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: -1049605525, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: -1481752367, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: -126534613, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: 1032717421, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: -263585099, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: -979093156, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: -2093007318, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: -2052527257, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: 994236672, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: 1916038077, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: -1348632177, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: -1279473511, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: 1457148675, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: -1398295911, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: -736693430, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: 317407026, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: 1083731681, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: 289065044, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  - {fileID: -1607336180, guid: 1ddbac79ea9ae5d4e95ef561e6da8240, type: 3}
+  frameRate: 20
+--- !u!4 &22236064
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22236062}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1768.8934, y: 1153.0942, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &100197866
 GameObject:
   m_ObjectHideFlags: 0
@@ -412,7 +489,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 084254ac4bd92814d900fdff305b6520, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneLoading
-  minLoadTime: 0.5
+  loadingAnimation: {fileID: 22236063}
 --- !u!4 &929342275
 Transform:
   m_ObjectHideFlags: 0
@@ -619,7 +696,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5e9200aba190d4349b5ad7a07ddd0e1a, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -645,3 +722,4 @@ SceneRoots:
   - {fileID: 100197868}
   - {fileID: 929342275}
   - {fileID: 1515137340}
+  - {fileID: 22236064}
