@@ -1206,10 +1206,10 @@ MonoBehaviour:
   scoreDigitsDisplay: {fileID: 1450557958}
   rankImageSlot: {fileID: 543295148}
   rankSprites:
-  - {fileID: -2141434780, guid: 6e9c1278791e43245b83748aa53ffa26, type: 3}
-  - {fileID: 1599501392, guid: 6e9c1278791e43245b83748aa53ffa26, type: 3}
-  - {fileID: 1105404137, guid: 6e9c1278791e43245b83748aa53ffa26, type: 3}
-  - {fileID: -1215847440, guid: 6e9c1278791e43245b83748aa53ffa26, type: 3}
+  - {fileID: 2073583734, guid: 4b63db32651b26e4fa3fc03ea65d887f, type: 3}
+  - {fileID: -613107458, guid: 4b63db32651b26e4fa3fc03ea65d887f, type: 3}
+  - {fileID: -238722635, guid: 4b63db32651b26e4fa3fc03ea65d887f, type: 3}
+  - {fileID: 1654143712, guid: 4b63db32651b26e4fa3fc03ea65d887f, type: 3}
   rankSMinScore: 15000
   rankAMinScore: 10000
   rankBMinScore: 5000
