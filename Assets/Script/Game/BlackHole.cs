@@ -69,7 +69,7 @@ public class BlackHole : MonoBehaviour
 
             // 得点は各球のサイズ段階から計算（従来通り）
             int stage = ball.GetSizeStage();
-            total += (baseScore + stage * sizeMultiplier) * sameColorBonus;
+            total += (baseScore + stage * sizeMultiplier) * sameColorBonus*10;
 
             ColorCounter.Instance.AddCount(ball.GetColor());
             // 4個は「そっと」消す（個別の消滅エフェクトは出さない）
@@ -92,7 +92,7 @@ public class BlackHole : MonoBehaviour
     void AcceptDifferentColor(BallLauncher ball)
     {
         int stage = ball.GetSizeStage();
-        int score = (baseScore + stage * sizeMultiplier) * 1;
+        int score = (baseScore + stage * sizeMultiplier) * 10;
 
         Debug.Log(holeColor + "：違う色 即結算 +" + score);
         SendScore(score);
