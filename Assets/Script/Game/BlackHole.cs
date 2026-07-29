@@ -16,9 +16,9 @@ public class BlackHole : MonoBehaviour
     public int requiredCount = 4;           // 同色が何個で結算するか
 
     [Header("スコア計算")]
-    public int baseScore = 5;               // 基礎値
+    public int baseScore = 3;               // 基礎値
     public int sizeMultiplier = 1;          // サイズ段階にかける倍率
-    public int sameColorBonus = 2;          // 同じ色の時の倍率
+    public int sameColorBonus = 3;          // 同じ色の時の倍率
 
     // 同じ色のボールを溜めておくリスト
     private List<BallLauncher> sameColorBalls = new List<BallLauncher>();
@@ -70,8 +70,8 @@ public class BlackHole : MonoBehaviour
             // 得点は各球のサイズ段階から計算（従来通り）
             int stage = ball.GetSizeStage();
             total += (baseScore + stage * sizeMultiplier) * sameColorBonus;
-            ColorCounter.Instance.AddCount(ball.GetColor());
 
+            ColorCounter.Instance.AddCount(ball.GetColor());
             // 4個は「そっと」消す（個別の消滅エフェクトは出さない）
             Destroy(ball.gameObject);
         }

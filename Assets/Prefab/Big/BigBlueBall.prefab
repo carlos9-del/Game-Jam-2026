@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6ea2a4bdc7dd164a9bcb754a1633a29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BigBall
-  targetScale: 3
+  targetScale: 6
   growSpeed: 2
   explosionEffect: {fileID: 5447657844597286543, guid: 90aa243b0b762e34680be3a5115de129, type: 3}
 --- !u!1 &3306634056041680305

@@ -213,7 +213,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &6116772101621460674
 MonoBehaviour:
@@ -232,15 +232,19 @@ MonoBehaviour:
   maxRadius: 0.9
   expandSpeed: 0.4
   angularSpeed: 300
+  suckScaleMultiplier: 1.5
+  scaleGrowSpeed: 2
   syoumetuEffectPrefab: {fileID: 5447657844597286543, guid: dfd508c37debf894688ef9a9290ae3a0, type: 3}
   launchSpeed: 7
   reflectCount: 0
   maxReflect: 5
-  sizeStep: 0.2
+  sizeStep: 0.3
   shrinkSpeed: 1.5
   suckAngularSpeed: 120
   captureRadius: 1
   ballColor: 0
+  stuckThreshold: 0.5
+  stuckTime: 0.3
 --- !u!58 &8607069006292213681
 CircleCollider2D:
   m_ObjectHideFlags: 0
