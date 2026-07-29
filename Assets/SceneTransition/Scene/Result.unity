@@ -921,8 +921,8 @@ MonoBehaviour:
   resultSEVolume: 0.5
   resultBGM: {fileID: 8300000, guid: 4bdde56b5b9d77543850627d726e74cb, type: 3}
   resultBGMNormalVolume: 0.5
-  resultBGMVolumeDuringCharacterSE: 0.1
-  resultBGMVolumeDuringCongratsSE: 0.1
+  resultBGMVolumeDuringCharacterSE: 0.05
+  resultBGMVolumeDuringCongratsSE: 0.05
   characterSounds:
   - {fileID: 0}
   - {fileID: 0}
@@ -930,7 +930,7 @@ MonoBehaviour:
   - {fileID: 0}
   characterSEVolume: 1
   testCharacterIndex: 0
-  congratsSE: {fileID: 0}
+  congratsSE: {fileID: 8300000, guid: fd2bd1e44a203d34e9435ec80e653dcf, type: 3}
   congratsSEVolume: 1
 --- !u!4 &1096808758
 Transform:
