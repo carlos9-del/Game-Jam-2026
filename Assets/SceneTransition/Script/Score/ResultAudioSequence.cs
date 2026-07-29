@@ -7,23 +7,19 @@ using UnityEngine;
 // EN: Lives in the Result scene. Plays a scripted sequence of sounds:
 //     1. Plays resultSE first, alone.
 //     2. Once resultSE finishes, starts the BGM and characterSE together (BGM ducked lower).
+//        characterSE is chosen based on which ball color was collected the most (from ColorCounter).
 //     3. Once characterSE finishes, plays congratsSE (BGM ducked again, possibly a different amount).
 //     4. Once congratsSE finishes, BGM returns to its normal volume for the rest of the scene.
 //     Each step's timing is driven by the actual length of its clip, so it stays in sync
 //     even if clips are swapped later. Stops the BGM automatically when Result unloads.
-//     NOTE: characterSE selection is temporary - since the ball-color tracking system doesn't
-//     exist yet, "Test Character Index" lets you manually preview each of the 4 slots. Once the
-//     real tracking exists, replace the one line in PlayCharacterAndBGM() that reads it.
 // JP: Resultシーンに配置する。以下の順序でサウンドを再生する。
 //     1. まずresultSEのみを再生する。
 //     2. resultSEが終わったら、BGMとcharacterSEを同時に開始する（BGMは音量を下げる）。
+//        characterSEは、最も多く集められたボールの色に応じて選ばれる（ColorCounterから取得）。
 //     3. characterSEが終わったら、congratsSEを再生する（BGMは再度、別の量で音量を下げる）。
 //     4. congratsSEが終わったら、BGMはシーンの残り時間、通常の音量に戻る。
 //     各ステップのタイミングは、クリップの実際の長さに基づいて制御されるため、
 //     後でクリップを差し替えても同期がずれない。Resultがアンロードされる際、自動的にBGMを停止する。
-//     ※characterSEの選択は仮のもの - ボールの色を追跡するシステムがまだ存在しないため、
-//     「Test Character Index」で4つのスロットを手動でプレビューできるようにしている。
-//     実際の追跡システムができたら、PlayCharacterAndBGM()内の該当する1行を置き換えること。
 public class ResultAudioSequence : MonoBehaviour
 {
     [Header("Step 1 - Result SE (plays first, alone)")]
@@ -36,12 +32,12 @@ public class ResultAudioSequence : MonoBehaviour
     [SerializeField][Range(0f, 1f)] private float resultBGMVolumeDuringCharacterSE = 0.3f;
     [SerializeField][Range(0f, 1f)] private float resultBGMVolumeDuringCongratsSE = 0.3f;
 
-    [Header("Step 2 - Character SE (index 0-3 = ball color that scored the most)")]
-    [SerializeField] private AudioClip[] characterSounds = new AudioClip[4];
+    [Header("Step 2 - Character SE (Red, Yellow, Blue, Green - matches ColorCounter's order)")]
+    [SerializeField] private AudioClip redCharacterSE;
+    [SerializeField] private AudioClip yellowCharacterSE;
+    [SerializeField] private AudioClip blueCharacterSE;
+    [SerializeField] private AudioClip greenCharacterSE;
     [SerializeField][Range(0f, 1f)] private float characterSEVolume = 1.0f;
-
-    [Header("TEMPORARY - manually pick which character SE to preview (0-3), until ball tracking exists")]
-    [SerializeField] private int testCharacterIndex = 0;
 
     [Header("Step 3 - Congrats SE (plays after Character SE finishes)")]
     [SerializeField] private AudioClip congratsSE;
@@ -61,13 +57,14 @@ public class ResultAudioSequence : MonoBehaviour
         SoundManager.Instance.PlaySE(resultSE, resultSEVolume);
         if (resultSE != null) yield return new WaitForSecondsRealtime(resultSE.length);
 
-        // EN: Step 2 - Start BGM and Character SE together, BGM ducked.
+        // EN: Step 2 - Start BGM and Character SE(s) together, BGM ducked.
+        //     If multiple colors are tied for the highest count, all of their SE play together.
         // JP: ステップ2 - BGMとCharacter SEを同時に開始する。BGMは音量を下げる。
+        //     複数の色が最多タイの場合、それらのSEをすべて同時に再生する。
         SoundManager.Instance.PlayBGM(resultBGM, resultBGMVolumeDuringCharacterSE);
 
-        AudioClip characterSE = GetCharacterSE();
-        SoundManager.Instance.PlaySE(characterSE, characterSEVolume);
-        if (characterSE != null) yield return new WaitForSecondsRealtime(characterSE.length);
+        float characterSEWaitTime = PlayMostCollectedCharacterSounds();
+        if (characterSEWaitTime > 0) yield return new WaitForSecondsRealtime(characterSEWaitTime);
 
         // EN: Step 3 - Congrats SE, BGM ducked again (possibly a different amount).
         // JP: ステップ3 - Congrats SE。BGMは再度音量を下げる（別の量の場合もある）。
@@ -80,23 +77,51 @@ public class ResultAudioSequence : MonoBehaviour
         SoundManager.Instance.SetBGMVolume(resultBGMNormalVolume);
     }
 
-    // EN: Gets which character SE to play. TEMPORARY: uses the manually-set test index until
-    //     real ball-color tracking exists - replace this line with the real result once it does.
-    // JP: どのCharacter SEを再生するかを取得する。仮実装：実際のボールの色の追跡システムが
-    //     できるまでは、手動設定のテスト用インデックスを使用する - できたらこの行を置き換える。
-    private AudioClip GetCharacterSE()
+    // EN: Plays the character SE for every color tied for the highest count (all at once if
+    //     there's a tie), and returns the longest clip's length, to know how long to wait.
+    // JP: 最も多く集められた色（複数タイの場合は全て）のcharacter SEを再生し（同点の場合は同時に再生）、
+    //     待機時間を判断するために、その中で最も長いクリップの長さを返す。
+    private float PlayMostCollectedCharacterSounds()
     {
-        if (characterSounds == null || testCharacterIndex < 0 || testCharacterIndex >= characterSounds.Length)
-        {
-            return null;
-        }
-        return characterSounds[testCharacterIndex];
+        int redCount = ColorCounter.Instance.GetCount(BallColorType.Red);
+        int yellowCount = ColorCounter.Instance.GetCount(BallColorType.Yellow);
+        int blueCount = ColorCounter.Instance.GetCount(BallColorType.Blue);
+        int greenCount = ColorCounter.Instance.GetCount(BallColorType.Green);
+
+        int highestCount = Mathf.Max(redCount, yellowCount, blueCount, greenCount);
+
+        System.Collections.Generic.List<string> winningColors = new System.Collections.Generic.List<string>();
+        float longestLength = 0f;
+
+        if (redCount == highestCount) longestLength = Mathf.Max(longestLength, PlayCharacterSE(redCharacterSE, "Red", winningColors));
+        if (yellowCount == highestCount) longestLength = Mathf.Max(longestLength, PlayCharacterSE(yellowCharacterSE, "Yellow", winningColors));
+        if (blueCount == highestCount) longestLength = Mathf.Max(longestLength, PlayCharacterSE(blueCharacterSE, "Blue", winningColors));
+        if (greenCount == highestCount) longestLength = Mathf.Max(longestLength, PlayCharacterSE(greenCharacterSE, "Green", winningColors));
+
+        Debug.Log("Ball counts - Red: " + redCount + ", Yellow: " + yellowCount +
+            ", Blue: " + blueCount + ", Green: " + greenCount +
+            " | Winning color(s): " + string.Join(", ", winningColors));
+
+        return longestLength;
     }
 
-    // EN: Stops the BGM when this scene unloads, so it doesn't keep playing into the next scene.
-    // JP: このシーンがアンロードされる際にBGMを停止し、次のシーンで鳴り続けないようにする。
+    // EN: Plays one character SE and records its color name, returning its length (0 if no clip).
+    // JP: 1つのcharacter SEを再生し、その色の名前を記録する。長さを返す（クリップが無ければ0）。
+    private float PlayCharacterSE(AudioClip clip, string colorName, System.Collections.Generic.List<string> winningColors)
+    {
+        winningColors.Add(colorName);
+        if (clip == null) return 0f;
+        SoundManager.Instance.PlaySE(clip, characterSEVolume);
+        return clip.length;
+    }
+
+    // EN: Stops the BGM and any playing SE when this scene unloads, so nothing keeps
+    //     playing into the next scene.
+    // JP: このシーンがアンロードされる際にBGMと再生中のSEを停止し、
+    //     次のシーンで鳴り続けないようにする。
     private void OnDestroy()
     {
         SoundManager.Instance.StopBGM();
+        SoundManager.Instance.StopSE();
     }
 }

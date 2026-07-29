@@ -9,16 +9,30 @@ public class ColorCounter : MonoBehaviour
     // 色ごとの個数を記録する辞書
     private Dictionary<BallColorType, int> counts = new Dictionary<BallColorType, int>();
 
+    //void Awake()
+    //{
+    //    if (Instance == null) Instance = this;
+    //    else { Destroy(gameObject); return; }
+
+    //    // 4色ぶんを0で初期化しておく
+    //    counts[BallColorType.Red] = 0;
+    //    counts[BallColorType.Yellow] = 0;
+    //    counts[BallColorType.Blue] = 0;
+    //    counts[BallColorType.Green] = 0;
+    //}
     void Awake()
     {
-        if (Instance == null) Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+            transform.SetParent(null);
+            DontDestroyOnLoad(gameObject);
+            counts[BallColorType.Red] = 0;
+            counts[BallColorType.Yellow] = 0;
+            counts[BallColorType.Blue] = 0;
+            counts[BallColorType.Green] = 0;
+        }
         else { Destroy(gameObject); return; }
-
-        // 4色ぶんを0で初期化しておく
-        counts[BallColorType.Red] = 0;
-        counts[BallColorType.Yellow] = 0;
-        counts[BallColorType.Blue] = 0;
-        counts[BallColorType.Green] = 0;
     }
 
     // ===== 計数を1増やす（球が穴に入った時に呼ぶ）=====

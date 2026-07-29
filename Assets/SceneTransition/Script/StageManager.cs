@@ -18,7 +18,15 @@ public class StageManager : MonoBehaviour
 
     private void Start()
     {
+        ResetGameData();
         PlayStageBGM();
+    }
+
+    // EN: Resets counters from any previous playthrough, so a new game starts clean.
+    // JP: 前回のプレイからのカウンターをリセットし、新しいゲームがまっさらな状態で始まるようにする。
+    private void ResetGameData()
+    {
+        ColorCounter.Instance.ResetAll();
     }
 
     // EN: Stops the BGM when this scene unloads (going to Result, back to Title, etc.),

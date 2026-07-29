@@ -52,6 +52,12 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
         return bgmAudioSource.isPlaying && bgmAudioSource.clip == clip;
     }
 
+    // EN: Stops any currently playing sound effect(s). / JP: Œ»İÄ¶’†‚ÌSE‚ğ’â~‚·‚éB
+    public void StopSE()
+    {
+        seAudioSource.Stop();
+    }
+
     // EN: Stops the currently playing BGM. / JP: Œ»İÄ¶’†‚ÌBGM‚ğ’â~‚·‚éB
     public void StopBGM()
     {

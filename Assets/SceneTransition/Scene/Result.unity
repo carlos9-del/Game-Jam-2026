@@ -923,13 +923,11 @@ MonoBehaviour:
   resultBGMNormalVolume: 0.5
   resultBGMVolumeDuringCharacterSE: 0.05
   resultBGMVolumeDuringCongratsSE: 0.05
-  characterSounds:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  redCharacterSE: {fileID: 8300000, guid: c298479eb10e0aa478dc231c774032de, type: 3}
+  yellowCharacterSE: {fileID: 8300000, guid: 5057df02cc84c1341b8ca105af999300, type: 3}
+  blueCharacterSE: {fileID: 8300000, guid: a6696bc0f43eb8a499c3a084eb60dca7, type: 3}
+  greenCharacterSE: {fileID: 8300000, guid: 5d13b38d3ce958642814a20bbf5ac889, type: 3}
   characterSEVolume: 1
-  testCharacterIndex: 0
   congratsSE: {fileID: 8300000, guid: fd2bd1e44a203d34e9435ec80e653dcf, type: 3}
   congratsSEVolume: 1
 --- !u!4 &1096808758
